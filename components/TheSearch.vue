@@ -45,7 +45,6 @@
 <script lang="ts" setup>
 const open = ref(false);
 const search = ref<HTMLInputElement | null>(null);
-
 </script>
 
 <style></style>

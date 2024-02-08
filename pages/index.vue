@@ -1,23 +1,20 @@
 <template>
-  <div class="max-w-lg p-4 mx-auto">
+  <div class="max-w-xl p-4 mx-auto">
     <CreatePost />
-    <ThePost />
-    <ThePost :image="false" />
-    <ThePost />
-    <ThePost :image="true" />
-    <ThePost />
+    <ThePost v-for="post in posts" :key="post.id" :post="post" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { UserData } from "~/types/user";
-
+import type { PostData } from "~/types/post";
 definePageMeta({
   middleware: "auth",
   layout: "default",
 });
 
 const user = ref<UserData>({} as UserData);
+const posts = ref<PostData[]>([]);
 onMounted(async () => {
   user.value = await $fetch<UserData>("api/user", {
     method: "GET",
@@ -25,5 +22,9 @@ onMounted(async () => {
       authorization: `Bearer ${useTokenStore().accessToken}`,
     },
   });
+  posts.value = await $fetch<PostData[]>("api/post/get-post", {
+    method: "GET",
+  });
+  userStore().setUser(user.value);
 });
 </script>

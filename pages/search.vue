@@ -7,11 +7,6 @@
       <RecommendedPost topic="Lancau" />
       <RecommendedPost topic="Lan" />
       <TheTitle title="Trending posts" />
-      <ThePost />
-      <ThePost :image="true" />
-      <ThePost />
-      <ThePost :image="false" />
-      <ThePost />
     </div>
   </div>
 </template>

@@ -59,6 +59,7 @@ const logout = async () => {
   }).then(async () => {
     useTokenStore().accessToken = "";
     await navigateTo('/auth');
+    userStore().clearUser();
   });
 }
 

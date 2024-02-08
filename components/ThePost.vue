@@ -4,9 +4,9 @@
       <img src="/background.png" class="w-10 h-10 rounded-full object-cover" />
       <div class="flex w-full justify-between">
         <div class="flex gap-x-2 items-center">
-          <h1 class="font-semibold tracking-wide text-slate-600">John Doe</h1>
+          <h1 class="font-semibold tracking-wide text-slate-600">{{ post.users.first_name }} {{ post.users.last_name }}</h1>
           <p class="text-sm font-semibold tracking-wide text-slate-500">
-            @johndoe
+            @{{ post.users.username }}
           </p>
           <p class="text-sm tracking-wide text-slate-500">
             <b>·</b> 2h ago
@@ -19,10 +19,13 @@
     </div>
     <div class="mt-4 space-y-2">
       <p class="text-slate-600">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
+        {{ post.content }}
       </p>
-      <img v-if="image" src="/background.png" class="max-h-[300px]" alt="" />
+      <div class="grid grid-flow-col gap-2" v-if="post.images?.length">
+        <template v-for="img in post.images">
+          <img :src="`${config.public.BUCKET_URL}/posts/${img.image_url}`" class="object-cover m-auto rounded-md border-slate-200" alt="" />
+        </template>
+      </div>
     </div>
     <div class="mt-2 flex justify-between">
       <div class="flex items-center group cursor-pointer">
@@ -60,9 +63,13 @@
 </template>
 
 <script lang="ts" setup>
+import type { PostData } from '~/types/post';
 const props = defineProps<{
-  image?: boolean;
+  post: PostData;
 }>();
+
+
+const config = useRuntimeConfig()
 </script>
 
 <style>
