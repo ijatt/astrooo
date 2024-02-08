@@ -1,13 +1,28 @@
-import { PostSchema } from "~/types/post"
-import Post from "~/server/models/post"
+import { PrismaClient } from "@prisma/client"
 
 export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params as { id: string }
 
-    const post = await Post.findById(id)
+    const prisma = new PrismaClient()
+    const post = await prisma.posts.findUnique({
+      where: {
+        id: parseInt(id)
+      },
+      include: {
+        images: true,
+        users: {
+          select: {
+            username: true,
+            first_name: true,
+            last_name: true,
+          }
+        }
+      }
+    })
 
-    return post as unknown as PostSchema
+    return post
+   
   } catch (error) {
       return createError({ statusCode: 404, statusMessage: "Post not found." })     
   }

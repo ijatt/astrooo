@@ -64,7 +64,7 @@
 
 <script lang="ts" setup>
 import type { PostData } from '~/types/post';
-const props = defineProps<{
+defineProps<{
   post: PostData;
 }>();
 

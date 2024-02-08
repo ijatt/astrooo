@@ -19,7 +19,7 @@
             <div class="relative" v-for="(item, index) in imgSrc">
             <img
               :src="item"
-              class="border border-slate-200 rounded-md w-full"
+              class="border border-slate-200 rounded-md w-full object-cover mb-2"
               alt=""
             />
             <button
@@ -118,7 +118,7 @@ const createPost = async () => {
   }
 
   if (image.value?.length) {
-    payload.value.image_url = await uploadImage(image.value, "posts");
+    payload.value.image_url = await uploadImage(image.value, "posts") as string[];
   }
 
   const post = await $fetch("/api/post/create", {
