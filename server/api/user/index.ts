@@ -1,6 +1,5 @@
-import { H3Error } from "h3"
 import { UserData } from "~/types/user"
-import User from "~/server/models/user"
+import { PrismaClient } from "@prisma/client"
 import { checkAccessToken } from "~/server/utils/check-token"
 
 export default defineEventHandler(async (event) => {
@@ -9,7 +8,20 @@ export default defineEventHandler(async (event) => {
     
     if(!userID) return createError({ statusCode: 401, statusMessage: "Unauthorized" })
 
-    const user = await User.findById(userID).select("-password")
+    const prisma = new PrismaClient()
+    const user = await prisma.users.findUnique({
+      where: {
+        id: userID as number
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        first_name: true,
+        last_name: true,
+        image_url: true
+      }
+    })
     if(!user) return createError({ statusCode: 404, statusMessage: "User not found" })
 
     return user as unknown as UserData

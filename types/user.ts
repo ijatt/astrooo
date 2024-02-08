@@ -23,7 +23,7 @@ export interface UserSignInRequest {
 }
 
 export interface UserData {
-    id: string;
+    id: number;
     email: string;
     username: string;
     firstName: string;

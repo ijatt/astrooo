@@ -1,7 +1,7 @@
 import JWT from "jsonwebtoken";
 
 interface Payload {
-  id: string;
+  id: number;
 }
 
 export const verifyToken = (token: string): Payload | false => {

@@ -1,21 +1,30 @@
-import User from "~/server/models/user"
+import { PrismaClient } from "@prisma/client"
 
 export default defineEventHandler(async (event) => {
   try {
-    const header = getHeader(event, "cookie")
-    if(!header || !header.startsWith("authorization")) return createError({ statusCode: 401, statusMessage: "Unauthorized" })
+
+    const cookie = getCookie(event, "authorization")
     
-    const authorization = header.split("=")[1]
-    const decodedToken = verifyToken(authorization)  
+    if(!cookie) return createError({ statusCode: 401, statusMessage: "User is not authorized" })
+
+
+    const decodedToken = verifyToken(cookie)  
     if(!decodedToken) return createError({ statusCode: 401, statusMessage: "User session is not valid" })
     
-    const user = await User.findById((decodedToken as any).id)
+    const prisma = new PrismaClient()
+    const user = await prisma.users.findUniqueOrThrow({
+      where: {
+        id: decodedToken.id
+      }
+    })
     if(!user) return createError({ statusCode: 404, statusMessage: "User not found" })
 
     const token = signToken({ id: user.id })    
     return token
     
   } catch (error) {
+    console.log(error);
+    
     return createError({ statusCode: 500, statusMessage: "Internal Server Error" })
   }
 })

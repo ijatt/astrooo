@@ -1,7 +1,7 @@
-import User from "../models/user";
+import { PrismaClient } from "@prisma/client"
 import { H3Event } from "h3"
 
-export const checkAccessToken = async (event: H3Event): Promise<string | boolean> => {
+export const checkAccessToken = async (event: H3Event): Promise<number | boolean> => {
   try {
     const authorizationHeader = getHeader(event, "authorization")
     if(!authorizationHeader) return false
@@ -13,7 +13,12 @@ export const checkAccessToken = async (event: H3Event): Promise<string | boolean
     
     if(!payload) return false
     
-    const user = await User.findById(payload.id)    
+    const prisma = new PrismaClient()
+    const user = await prisma.users.findUnique({
+      where: {
+        id: payload.id
+      }
+    })
     if(!user) return false
     
     return user.id

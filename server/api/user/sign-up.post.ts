@@ -1,25 +1,33 @@
-import { UserRequest } from "~/types/user"
-import User from "~/server/models/user"
-import { hashPassword } from "~/server/utils/hash-password";
+import { PrismaClient, Prisma } from "@prisma/client" 
+import { UserRequest } from "~/types/user";
 
 export default defineEventHandler(async (event) => {
   try {
-    const body = await readBody<UserRequest | null>(event);
+    const body = await readBody<UserRequest>(event);
     if (body === null) {
       return createError({ statusCode: 400, statusMessage: "Bad Request" })
     }
-   
-    const user = await User.create({
-      firstName: body.firstName,
-      lastName: body.lastName,
-      email: body.email,
-      password: await hashPassword(body.password),
-      username: body.username,
-    })   
+
+    const prisma = new PrismaClient()
+    const user = await prisma.users.create({
+      data: {
+        email: body.email,
+        username: body.username,
+        password: await hashPassword(body.password),
+        first_name: body.firstName,
+        last_name: body.lastName
+      }
+    })
 
     return user.id
-
+    
   } catch (error) {
-    return createError({ statusCode: 500, statusMessage: "Internal Server Kontol" })
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return createError({ statusCode: 400, statusMessage: "Email already exists" })
+      } else {
+        return createError({ statusCode: 500, statusMessage: "Internal Server Error" })
+      }
+    }
   }
 })
