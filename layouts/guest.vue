@@ -2,7 +2,7 @@
   <div
     class="bg-[url('/background.jpg')] h-screen bg-cover"
   >
-    <div class="bg-white w-full h-full bg-opacity-20 to-40% bg-gradient-to-l from-indigo-500 grid place-items-center">
+    <div class="bg-white w-full h-full bg-opacity-20 to-40% bg-gradient-to-l from-indigo-500 grid place-items-center to-purple-500">
       <slot />
     </div>
   </div>

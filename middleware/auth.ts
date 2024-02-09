@@ -6,6 +6,7 @@ export default defineNuxtRouteMiddleware(async() => {
     })
 
     if (!accessToken.value) {
+        userStore().clearUser()
         return await navigateTo("/auth")
     }
 

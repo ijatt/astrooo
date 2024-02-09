@@ -13,7 +13,6 @@
             <input
               type="text"
               class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
-              placeholder="John"
               v-model="payload.firstName"
             />
           </label>
@@ -24,7 +23,6 @@
             <input
               type="email"
               class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
-              placeholder="your@email.com"
               v-model="payload.email"
             />
           </label>
@@ -35,7 +33,6 @@
             <input
               type="password"
               class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
-              placeholder="********"
               v-model="payload.password"
             />
           </label>
@@ -48,7 +45,6 @@
             <input
               type="text"
               class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
-              placeholder="Doe"
               v-model="payload.lastName"
             />
           </label>
@@ -59,7 +55,6 @@
             <input
               type="text"
               class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
-              placeholder="1234567890"
               v-model="payload.username"
             />
           </label>
@@ -70,7 +65,6 @@
             <input
               type="password"
               class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
-              placeholder="********"
               v-model="confirmPassword"
             />
           </label>
@@ -88,8 +82,9 @@
       </div>
       <button
         type="submit"
-        class="w-full p-2 mt-2 bg-indigo-600 text-white font-semibold tracking-wide rounded-md focus:outline-none"
+        class="w-full p-2 mt-2 bg-indigo-600 hover:bg-indigo-700 transition-all text-white font-semibold tracking-wide rounded-md focus:outline-none"
       >
+        <Icon v-if="loading" name="line-md:loading-alt-loop" />
         Sign Up
       </button>
     </form>
@@ -103,9 +98,9 @@ definePageMeta({
 });
 
 const toast = useToast();
-
 const payload = ref<UserRequest>({} as UserRequest);
 const confirmPassword = ref<string>("");
+const loading = ref(false)
 
 const signUp = async () => {
   if (payload.value.password !== confirmPassword.value) {
@@ -116,9 +111,7 @@ const signUp = async () => {
       color: "red",
     })
   } else {
-    // Call the API to sign up the user
-    console.log(payload.value);
-    
+    loading.value = true
     await $fetch("/api/user/sign-up", {
       method: "POST",
       body: payload.value
@@ -136,10 +129,10 @@ const signUp = async () => {
       toast.add({
         id: "sign-up-error",
         title: "Sign Up Error",
-        description: error,
+        description: error.statusMessage,
         color: "red",
       })
-    );
+    ).finally(() => loading.value = false);
   }
 }
 </script>

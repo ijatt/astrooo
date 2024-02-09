@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-xl p-4 mx-auto">
-    <CreatePost />
+    <CreatePost @refresh="refresh" />
     <ThePost v-for="post in posts" :key="post.id" :post="post" />
   </div>
 </template>
@@ -27,4 +27,10 @@ onMounted(async () => {
   });
   userStore().setUser(user.value);
 });
+
+const refresh =  async () => {
+  posts.value = await $fetch<PostData[]>("api/post/get-post", {
+    method: "GET",
+  });
+}
 </script>

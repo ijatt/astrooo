@@ -35,6 +35,7 @@
             </span>
             <NuxtLink
               to="#"
+              tabindex="-1"
               class="text-slate-600 font-semibold tracking-wide hover:underline hover:text-indigo-600"
               >Forgot Password?
             </NuxtLink>
@@ -57,8 +58,9 @@
           </div>
         <button
           type="submit"
-          class="w-full p-2 mt-4 bg-indigo-600 text-white font-semibold tracking-wide rounded-md focus:outline-none"
+          class="w-full p-2 mt-4 bg-indigo-600 hover:bg-indigo-700 transition-all text-white font-semibold tracking-wide rounded-md focus:outline-none"
         >
+          <Icon v-if="loading" name="line-md:loading-alt-loop" />
           Login
         </button>
       </form>
@@ -75,6 +77,7 @@ definePageMeta({
 });
 
 const toast = useToast();
+const loading = ref(false)
 
 const payload = ref<UserSignInRequest>({
   email: "",
@@ -82,6 +85,7 @@ const payload = ref<UserSignInRequest>({
 });
 
 const login = async () => {
+  loading.value = true
   await $fetch("/api/user/sign-in", {
     method: "POST",
     body: payload.value,
@@ -102,6 +106,6 @@ const login = async () => {
       description: error.statusMessage,
       color: "red",
     })
-  );
+  ).finally(() => loading.value = false);;
 }
 </script>

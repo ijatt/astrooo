@@ -1,7 +1,7 @@
 <template>
   <div class="flex gap-x-4 w-full">
     <img
-      src="/background.png"
+      :src="userStore().user?.image_url ? `${$config.public.BUCKET_URL}/avatars/${userStore().user?.image_url}` : '/profile.png'"
       class="rounded-full w-10 h-10 object-cover"
       alt=""
     />
@@ -57,7 +57,8 @@
           <button
             class="py-2 px-4 text-sm bg-indigo-600 text-white font-semibold tracking-wide rounded-full focus:outline-none"
           >
-            Post
+            <Icon v-if="loading" name="line-md:loading-alt-loop" />
+            <span v-else>Post</span>
           </button>
         </div>
       </div>
@@ -66,10 +67,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { PostRequest, PostData } from "~/types/post";
+import type { PostRequest, PostResponse } from "~/types/post";
 const textarea = ref<HTMLTextAreaElement | null>(null);
 const imgSrc = ref<string[]>([]);
 const image = ref<File[] | null>([]);
+const loading = ref(false)
+const emit = defineEmits(["refresh"]);
 
 const file = ref<HTMLInputElement | null>(null);
 const hanldeChange = () => {
@@ -116,21 +119,23 @@ const createPost = async () => {
     toastError("Cannot post the post", "Content is required");
     return;
   }
-
+  loading.value = true
   if (image.value?.length) {
     payload.value.image_url = await uploadImage(image.value, "posts") as string[];
   }
 
-  const post = await $fetch("/api/post/create", {
+  const post = await $fetch<PostResponse>("/api/post/create", {
     method: "POST",
-    body: payload.value,
-  }) as PostData;
+    body: payload.value as PostRequest,
+  });
 
   if (post) {
     toastSuccess("Post Success", "You have successfully posted");
     reset();
+    emit("refresh");
   } else {
     toastError("Post Error", "Something went wrong");
   }
+  loading.value = false
 }
 </script>
