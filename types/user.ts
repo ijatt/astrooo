@@ -1,3 +1,5 @@
+import type { PostData } from "./post"; 
+
 export interface UserSchema {
     _id: string;
     email: string;
@@ -31,4 +33,23 @@ export interface UserData {
     createdAt: Date;
     updatedAt: Date;
     image_url: string | null;
+}
+
+export interface UserProfile {
+    id: number;
+    username: string;
+    first_name: string;
+    last_name: string;
+    image_url: string;
+    posts: PostData[]
+    created_at: Date;
+}
+
+
+export interface UserUpdateRequest {
+    id: number;
+    username: string;
+    first_name: string;
+    last_name: string;
+    image_url: string;
 }

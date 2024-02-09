@@ -11,6 +11,14 @@ export interface PostRequest {
     user_id: number;
 }
 
+export interface PostResponse {
+    id: number;
+    content: string;
+    user_id: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
 export interface PostData {
     id: number;
     content: string;
@@ -29,8 +37,9 @@ interface Image {
     updated_at: Date;
 }
 
-interface Users {
+export interface Users {
     username: string;
     first_name: string;
     last_name: string;
+    image_url: string;
 }
