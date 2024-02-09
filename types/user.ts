@@ -1,4 +1,4 @@
-import type { PostData } from "./post"; 
+import type { Post } from "./post"; 
 
 export interface UserSchema {
     _id: string;
@@ -41,7 +41,7 @@ export interface UserProfile {
     first_name: string;
     last_name: string;
     image_url: string;
-    posts: PostData[]
+    posts: Post[]
     created_at: Date;
 }
 

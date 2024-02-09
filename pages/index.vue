@@ -7,14 +7,14 @@
 
 <script lang="ts" setup>
 import type { UserData } from "~/types/user";
-import type { PostData } from "~/types/post";
+import type { Post } from "~/types/post";
 definePageMeta({
   middleware: "auth",
   layout: "default",
 });
 
 const user = ref<UserData>({} as UserData);
-const posts = ref<PostData[]>([]);
+const posts = ref<Post[]>([]);
 onMounted(async () => {
   user.value = await $fetch<UserData>("api/user", {
     method: "GET",
@@ -22,14 +22,14 @@ onMounted(async () => {
       authorization: `Bearer ${useTokenStore().accessToken}`,
     },
   });
-  posts.value = await $fetch<PostData[]>("api/post/get-post", {
+  posts.value = await $fetch<Post[]>("api/post/get-post", {
     method: "GET",
   });
   userStore().setUser(user.value);
 });
 
 const refresh =  async () => {
-  posts.value = await $fetch<PostData[]>("api/post/get-post", {
+  posts.value = await $fetch<Post[]>("api/post/get-post", {
     method: "GET",
   });
 }

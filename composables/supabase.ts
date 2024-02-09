@@ -23,3 +23,13 @@ export async function uploadImage(files: File[] | File, folder: string): Promise
     throw error
   }
 }
+
+export async function deleteImage(folder: string, path: string[]) {
+  const client = supabase()
+  try {
+    const { error } = await client.storage.from(folder).remove(path)
+    if (error) throw error
+  } catch (error) {
+    throw error
+  }
+}

@@ -104,6 +104,7 @@ const payload = reactive<UserUpdateRequest>({
 const updateProfile = async () => {
   loading.value = true
   if (profileFile.value) {
+    await deleteImage("avatars", [props.user.image_url])
     const path = await uploadImage(profileFile.value, "avatars")
     payload.image_url = path as string
   }

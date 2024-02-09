@@ -27,6 +27,7 @@ export interface PostData {
     updated_at: Date;
     images?: Image[];
     users: Users;
+    likes?: Like[];
 }
 
 interface Image {
@@ -41,5 +42,35 @@ export interface Users {
     username: string;
     first_name: string;
     last_name: string;
-    image_url: string;
+    image_url: string | null;
+}
+
+interface Like {
+    id: number;
+    user_id: number;
+    post_id: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Comment {
+    id: number;
+    content: string;
+    user_id: number;
+    post_id: number;
+    created_at: Date;
+    updated_at: Date;
+    users: Users;
+}
+
+export interface Post {
+    id: number;
+    content: string;
+    user_id: number;
+    created_at: Date;
+    updated_at: Date;
+    images?: Image[];
+    users: Users;
+    likes?: Like[];
+    comments?: Comment[];
 }

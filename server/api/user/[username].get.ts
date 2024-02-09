@@ -29,6 +29,19 @@ export default defineEventHandler(async (event) => {
                 last_name: true,
                 image_url: true
               }
+            },
+            likes: true,
+            comments: {
+              include: {
+                users: {
+                  select: {
+                    username: true,
+                    first_name: true,
+                    last_name: true,
+                    image_url: true
+                  }
+                }
+              }
             }
           },
           orderBy: {

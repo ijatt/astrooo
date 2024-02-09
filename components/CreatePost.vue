@@ -127,15 +127,16 @@ const createPost = async () => {
   const post = await $fetch<PostResponse>("/api/post/create", {
     method: "POST",
     body: payload.value as PostRequest,
-  });
+  }).catch((err) => {
+    toastError("Post Error", err.statusMessage);
+  })
 
   if (post) {
     toastSuccess("Post Success", "You have successfully posted");
     reset();
     emit("refresh");
-  } else {
-    toastError("Post Error", "Something went wrong");
-  }
+    textarea.value?.style.setProperty("height", "auto");
+  } 
   loading.value = false
 }
 </script>

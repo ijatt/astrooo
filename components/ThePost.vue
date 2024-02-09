@@ -31,7 +31,7 @@
         </UDropdown>
       </div>
     </div>
-    <div class="mt-4 space-y-2">
+    <div class="mt-4 space-y-2" @click="goTo">
       <p class="text-slate-600">
         {{ post.content }}
       </p>
@@ -43,23 +43,26 @@
     </div>
     <div class="mt-2 flex justify-between">
       <div class="flex items-center group cursor-pointer">
-      <button class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
+      <button @click="likePost" v-if="isLiked" class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
+        <Icon name="mdi:heart" class="w-5 h-5 text-indigo-600" />
+      </button>
+      <button @click="likePost" v-else class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
         <Icon name="mdi:heart-outline" class="w-5 h-5" />
       </button>
       <p
         class="text-slate-600 font-semibold tracking-wide group-hover:text-indigo-600"
       >
-        102
+        {{ likeCount }}
       </p>
     </div>
     <div class="flex items-center group cursor-pointer">
-      <button class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
+      <button @click="goTo" class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
         <Icon name="mdi:comment-outline" class="w-5 h-5" />
       </button>
       <p
         class="text-slate-600 font-semibold tracking-wide group-hover:text-indigo-600"
       >
-        102
+        {{ commentCount }}
       </p>
     </div>
     <div class="flex items-center group cursor-pointer">
@@ -72,16 +75,17 @@
         102
       </p>
     </div>
-  </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { PostData } from '~/types/post';
+import type { Post } from '~/types/post';
 const props = defineProps<{
-  post: PostData;
+  post: Post;
 }>();
 
+const postDetail = ref<Post>(props.post);
 const getHour = () => {
   const date = new Date(props.post.created_at);
   const hours = Math.abs(date.getHours() - new Date().getHours());
@@ -121,4 +125,30 @@ const items = computed(() => {
     return rawItems.filter((item) => item[0].label !== 'Edit' && item[0].label !== 'Delete')
   }
 })
+
+const likeCount = computed(() => {
+  return postDetail.value.likes?.length
+})
+
+const isLiked = computed(() => {
+  return postDetail.value.likes?.some((like) => like.user_id === userStore().user?.id)
+})
+
+const commentCount = computed(() => {
+  return postDetail.value.comments?.length
+})
+
+const likePost = async() => {
+  postDetail.value = await $fetch<Post>(`/api/post/like-post`, {
+    method: "POST",
+    body: JSON.stringify({
+      post_id: props.post.id,
+      user_id: userStore().user?.id
+    })
+  });
+}
+
+const goTo = async () => {
+  await navigateTo(`/${props.post.users.username}/post/${props.post.id}`)
+}
 </script>
