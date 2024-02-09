@@ -16,5 +16,6 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@nuxt/ui',
     '@pinia-plugin-persistedstate/nuxt',
+    '@vueuse/nuxt'
   ]
 })
