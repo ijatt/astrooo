@@ -1,9 +1,11 @@
-import { PostSchema } from "~/types/post" 
-import { PrismaClient } from "@prisma/client"
+import prisma from "~/server/db/prisma"
 
 export default defineEventHandler(async (event) => {
   try {
-    const prisma = new PrismaClient()
+    if (!prisma) {
+      return createError({ statusCode: 500, statusMessage: "Internal Server Error" })
+    }
+
     const posts = await prisma.posts.findMany({
       include: {
         images: true,
@@ -12,8 +14,12 @@ export default defineEventHandler(async (event) => {
             username: true,
             first_name: true,
             last_name: true,
+            image_url: true
           }
         }
+      },
+      orderBy: {
+        created_at: "desc"
       }
     })
 

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "~/server/db/prisma";
 import type {PostRequest, PostSchema} from "~/types/post";
 
 export default defineEventHandler(async (event) => {
@@ -7,8 +7,7 @@ export default defineEventHandler(async (event) => {
     if (body === null) {
       return createError({ statusCode: 400, statusMessage: "Bad Request" })
     }
-    const prisma = new PrismaClient()
-    
+        
     const post = await prisma.posts.create({
       data: {
         content: body.content,
@@ -27,7 +26,7 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    return post as unknown as PostSchema
+    return post
 
   } catch (error) {
     return createError({ statusCode: 500, statusMessage: "Internal Server Error" })

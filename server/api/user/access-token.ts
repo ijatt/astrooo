@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import prisma from "~/server/db/prisma"
 
 export default defineEventHandler(async (event) => {
   try {
@@ -11,7 +11,10 @@ export default defineEventHandler(async (event) => {
     const decodedToken = verifyToken(cookie)  
     if(!decodedToken) return createError({ statusCode: 401, statusMessage: "User session is not valid" })
     
-    const prisma = new PrismaClient()
+    if (!prisma) {
+      return createError({ statusCode: 500, statusMessage: "Internal Server Error" })
+    }
+
     const user = await prisma.users.findUniqueOrThrow({
       where: {
         id: decodedToken.id

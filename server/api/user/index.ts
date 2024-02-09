@@ -1,6 +1,5 @@
 import { UserData } from "~/types/user"
-import { PrismaClient } from "@prisma/client"
-import { checkAccessToken } from "~/server/utils/check-token"
+import prisma from "~/server/db/prisma"
 
 export default defineEventHandler(async (event) => {
   try {
@@ -8,7 +7,10 @@ export default defineEventHandler(async (event) => {
     
     if(!userID) return createError({ statusCode: 401, statusMessage: "Unauthorized" })
 
-    const prisma = new PrismaClient()
+    if (!prisma) {
+      return createError({ statusCode: 500, statusMessage: "Internal Server Error" })
+    }
+
     const user = await prisma.users.findUnique({
       where: {
         id: userID as number

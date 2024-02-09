@@ -1,4 +1,5 @@
-import { PrismaClient, Prisma } from "@prisma/client" 
+import { Prisma } from "@prisma/client" 
+import prisma from "~/server/db/prisma";
 import { UserSignInRequest } from "~/types/user";
 
 export default defineEventHandler(async (event) => {
@@ -9,7 +10,10 @@ export default defineEventHandler(async (event) => {
       return createError({ statusCode: 400, statusMessage: "Bad Request" })
     }
 
-    const prisma = new PrismaClient()
+    if (!prisma) {
+      return createError({ statusCode: 500, statusMessage: "Internal Server Error" })
+    }
+
     const user = await prisma.users.findFirstOrThrow({
       where: {
         email: body.email

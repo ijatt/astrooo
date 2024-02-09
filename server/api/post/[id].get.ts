@@ -1,10 +1,9 @@
-import { PrismaClient } from "@prisma/client"
+import prisma from "~/server/db/prisma"
 
 export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params as { id: string }
 
-    const prisma = new PrismaClient()
     const post = await prisma.posts.findUnique({
       where: {
         id: parseInt(id)
