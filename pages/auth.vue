@@ -1,6 +1,6 @@
 <template>
   <div class="bg-slate-100 p-4 rounded-xl grid grid-cols-2 shadow-md">
-    <div class="col-span-1">
+    <div class="col-span-1 hidden md:block">
       <ClientOnly>
         <Vue3Lottie
           animation-link="https://lottie.host/7cfc29d6-5030-4ad4-8009-aeb9da04983e/SBqFxxNE1D.json"
@@ -14,7 +14,7 @@
         ASTROOO
       </h1>
     </div>
-    <div class="col-span-1">
+    <div class="col-span-2 md:col-span-1">
       <p class="text-2xl font-bold tracking-wide text-center text-slate-700">Login</p>
       <form @submit.prevent="login">
         <label class="flex flex-col mt-4">

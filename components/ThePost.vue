@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="mt-4 space-y-2" @click="goTo">
-      <p class="text-slate-600">
+      <p class="text-slate-600 break-words">
         {{ post.content }}
       </p>
       <div class="grid grid-flow-col gap-2" v-if="post.images?.length">
