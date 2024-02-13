@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 border-b border-slate-200 hover:bg-slate-50 cursor-pointer">
+  <div class="p-4 border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer">
     <div class="flex items-center gap-2">
       <img class="w-10 h-10 rounded-full object-cover"
       :src="comment.users.image_url ? `${$config.public.BUCKET_URL}/avatars/${comment.users.image_url}` : '/profile.png' "
@@ -7,12 +7,12 @@
       <div class="flex w-full justify-between">
         <div class="flex gap-x-2 items-center">
           <div class="flex gap-x-2 items-center" @click="navigateTo(`/${comment.users.username}`)">
-            <h1 class="font-semibold hover:underline tracking-wide text-slate-600">{{ comment.users.first_name }} {{ comment.users.last_name }}</h1>
-            <p class="text-sm font-semibold tracking-wide text-slate-500">
+            <h1 class="font-semibold hover:underline tracking-wide text-slate-600 dark:text-slate-300">{{ comment.users.first_name }} {{ comment.users.last_name }}</h1>
+            <p class="text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400">
               @{{ comment.users.username }}
             </p>
           </div>
-          <p class="text-sm tracking-wide text-slate-500">
+          <p class="text-sm tracking-wide text-slate-500 dark:text-slate-400">
             <b>·</b> {{ getHour() }}h ago
           </p>
         </div>
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="mt-4 space-y-2">
-      <p class="text-slate-600">
+      <p class="text-slate-600 dark:text-slate-300">
         {{ comment.content }}
       </p>
     </div>

@@ -1,7 +1,7 @@
 <template>
-  <div class="py-2 px-4 hover:bg-slate-100 cursor-pointer">
+  <div class="py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-900 cursor-pointer">
     <div class="flex justify-between items-center">
-      <p class="text-slate-600 text-sm tracking-wide">Trending posts</p>
+      <p class="text-slate-600 dark:text-slate-300 text-sm tracking-wide">Trending posts</p>
       <button
         class="p-1.5 hover:bg-indigo-200 rounded-full flex items-center group"
       >
@@ -11,8 +11,8 @@
         />
       </button>
     </div>
-    <p class="text-slate-600 font-semibold tracking-wide">{{ topic ? topic : 'Taib' }}</p>
-    <p class="text-slate-600 text-sm tracking-wide">10 posts</p>
+    <p class="text-slate-600 dark:text-slate-300 font-semibold tracking-wide">{{ topic ? topic : 'Taib' }}</p>
+    <p class="text-slate-600 dark:text-slate-300 text-sm tracking-wide">10 posts</p>
   </div>
 </template>
 
