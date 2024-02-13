@@ -34,7 +34,9 @@ definePageMeta({
   layout: "default",
 });
 
-const { data, error, refresh } = await useFetch("/api/post/get-post");
+const { data, error, refresh } = await useFetch("/api/post/get-post", {
+  key: "posts",
+});
 
 const user = ref<UserData>({} as UserData);
 const posts = ref<Post[]>(data.value as Post[]);
