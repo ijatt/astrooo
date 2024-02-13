@@ -1,9 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import Prisma from "@prisma/client";
+const { PrismaClient } = Prisma;
 
 declare global {
-  var prisma: PrismaClient | undefined;
+    // @ts-ignore
+    var prisma: PrismaClient | undefined;
 }
 
+// @ts-ignore
 let prisma: PrismaClient | null = null;
 
 if (process.env.NODE_ENV === "production") {
