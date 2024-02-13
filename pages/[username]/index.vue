@@ -47,6 +47,8 @@
 </template>
 
 <script lang="ts" setup>
+import astro from "~/public/astro.json";
+import { Vue3Lottie } from "vue3-lottie";
 import type { UserProfile } from '~/types/user';
 definePageMeta({
     layout: "default",
