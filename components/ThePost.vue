@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 border-b border-slate-200 hover:bg-slate-50 cursor-pointer">
+  <div class="p-4 border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer">
     <div class="flex items-center gap-2">
       <img class="w-10 h-10 rounded-full object-cover"
       :src="post.users.image_url ? `${$config.public.BUCKET_URL}/avatars/${post.users.image_url}` : '/profile.png' "
@@ -7,12 +7,12 @@
       <div class="flex w-full justify-between">
         <div class="flex gap-x-2 items-center">
           <div class="flex gap-x-2 items-center" @click="navigateTo(`/${post.users.username}`)">
-            <h1 class="font-semibold hover:underline tracking-wide text-slate-600">{{ post.users.first_name }} {{ post.users.last_name }}</h1>
-            <p class="text-sm font-semibold tracking-wide text-slate-500">
+            <h1 class="font-semibold hover:underline tracking-wide text-slate-600 dark:text-slate-300">{{ post.users.first_name }} {{ post.users.last_name }}</h1>
+            <p class="text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400">
               @{{ post.users.username }}
             </p>
           </div>
-          <p class="text-sm tracking-wide text-slate-500">
+          <p class="text-sm tracking-wide text-slate-500 dark:text-slate-400">
             <b>·</b> {{ getHour() }}h ago
           </p>
         </div>
@@ -23,7 +23,8 @@
         >
           <Icon name="mdi:dots-horizontal" class="w-5 h-5 text-slate-600 group-hover:text-indigo-600" />
           <template #item="{ item }">
-            <div class="flex w-full" :class="item.label === 'Delete'? 'hover:text-red-600' : 'hover:text-indigo-600'">
+            <div class="flex w-full dark:text-slate-400 dark:hover:text-slate-300" 
+              :class="item.label === 'Delete'? 'hover:text-red-600 dark:hover:text-red-600' : 'hover:text-indigo-600 dark:hover:text-indigo-500'">
               <span >{{ item.label }}</span>
               <Icon :name="item.icon" class="w-5 h-5 ml-auto" />
             </div>
@@ -32,7 +33,7 @@
       </div>
     </div>
     <div class="mt-4 space-y-2" @click="goTo">
-      <p class="text-slate-600 break-words">
+      <p class="text-slate-600 dark:text-slate-300 break-words">
         {{ post.content }}
       </p>
       <div class="grid grid-flow-col gap-2" v-if="post.images?.length">
@@ -43,44 +44,44 @@
     </div>
     <div class="mt-2 flex justify-between">
       <div class="flex items-center group cursor-pointer">
-      <button @click="likePost" v-if="isLiked" class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
-        <Icon name="mdi:heart" class="w-5 h-5 text-indigo-600" />
-      </button>
-      <button @click="likePost" v-else class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
-        <Icon name="mdi:heart-outline" class="w-5 h-5" />
-      </button>
-      <p
-        class="text-slate-600 font-semibold tracking-wide group-hover:text-indigo-600"
-      >
-        {{ likeCount }}
-      </p>
-    </div>
-    <div class="flex items-center group cursor-pointer">
-      <button @click="goTo" class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
-        <Icon name="mdi:comment-outline" class="w-5 h-5" />
-      </button>
-      <p
-        class="text-slate-600 font-semibold tracking-wide group-hover:text-indigo-600"
-      >
-        {{ commentCount }}
-      </p>
-    </div>
-    <div class="flex items-center group cursor-pointer">
-      <button class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
-        <Icon name="mdi:share-outline" class="w-5 h-5" />
-      </button>
-      <p
-        class="text-slate-600 font-semibold tracking-wide group-hover:text-indigo-600"
-      >
-        102
-      </p>
-    </div>
+        <button @click="likePost" v-if="isLiked" class="flex items-center text-slate-600 dark:text-slate-400 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 dark:group-hover:bg-indigo-400 group-hover:text-indigo-600">
+          <Icon name="mdi:heart" class="w-5 h-5 text-indigo-600" />
+        </button>
+        <button @click="likePost" v-else class="flex items-center text-slate-600 dark:text-slate-400 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
+          <Icon name="mdi:heart-outline" class="w-5 h-5" />
+        </button>
+        <p
+          class="text-slate-600 dark:text-slate-400 font-semibold tracking-wide group-hover:text-indigo-600"
+        >
+          {{ likeCount }}
+        </p>
+      </div>
+      <div class="flex items-center group cursor-pointer">
+        <button @click="goTo" class="flex items-center text-slate-600 dark:text-slate-400 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 dark:group-hover:bg-indigo-400 group-hover:text-indigo-600">
+          <Icon name="mdi:comment-outline" class="w-5 h-5" />
+        </button>
+        <p
+          class="text-slate-600 dark:text-slate-400 font-semibold tracking-wide group-hover:text-indigo-600"
+        >
+          {{ commentCount }}
+        </p>
+      </div>
+      <div class="flex items-center group cursor-pointer">
+        <button class="flex items-center text-slate-600 dark:text-slate-400 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 dark:group-hover:bg-indigo-400 group-hover:text-indigo-600">
+          <Icon name="mdi:share-outline" class="w-5 h-5" />
+        </button>
+        <p
+          class="text-slate-600 dark:text-slate-400 font-semibold tracking-wide group-hover:text-indigo-600"
+        >
+          102
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Post } from '~/types/post';
+import type { Post, Like } from '~/types/post';
 const props = defineProps<{
   post: Post;
 }>();
@@ -139,7 +140,7 @@ const commentCount = computed(() => {
 })
 
 const likePost = async() => {
-  postDetail.value = await $fetch<Post>(`/api/post/like-post`, {
+  postDetail.value.likes = await $fetch<Like[]>(`/api/post/like-post`, {
     method: "POST",
     body: JSON.stringify({
       post_id: props.post.id,

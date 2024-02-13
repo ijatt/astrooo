@@ -1,82 +1,82 @@
 <template>
-  <div class="md:w-[632px] bg-slate-100 p-4 rounded-xl shadow-md">
-    <h1 class="text-2xl font-bold tracking-wide text-slate-700 text-center">
+  <div class="md:w-[632px] bg-slate-100 dark:bg-slate-950 p-4 rounded-xl shadow-md">
+    <h1 class="text-2xl font-bold tracking-wide text-slate-700 dark:text-slate-300 text-center">
       SIGN UP
     </h1>
     <form @submit.prevent="signUp">
         <div class="w-full md:flex gap-x-4 items-center">
           <label class="flex w-full flex-col mt-4">
-            <span class="font-semibold tracking-wide text-slate-600"
+            <span class="font-semibold tracking-wide text-slate-600 dark:text-slate-300"
               >First Name
             </span>
             <input
               type="text"
-              class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
+              class="w-full p-2 mt-1 ring-2 dark:bg-slate-900 dark:ring-slate-700 dark:focus:ring-indigo-600 border-none dark:text-slate-300 ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
               v-model="payload.firstName"
             />
           </label>
           <label class="flex w-full flex-col mt-4">
-            <span class="font-semibold tracking-wide text-slate-600"
+            <span class="font-semibold tracking-wide text-slate-600 dark:text-slate-300"
               >Last Name
             </span>
             <input
               type="text"
-              class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
+              class="w-full p-2 mt-1 ring-2 dark:bg-slate-900 dark:ring-slate-700 dark:focus:ring-indigo-600 border-none dark:text-slate-300 ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
               v-model="payload.lastName"
             />
           </label>
           </div>
-        <div class="w-full md:flex gap-x-2">
+        <div class="w-full md:flex gap-x-4">
           <label class="flex w-full flex-col mt-4">
-            <span class="font-semibold tracking-wide text-slate-600"
+            <span class="font-semibold tracking-wide text-slate-600 dark:text-slate-300"
               >Email Address
             </span>
             <input
               type="email"
-              class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
+              class="w-full p-2 mt-1 ring-2 dark:bg-slate-900 dark:ring-slate-700 dark:focus:ring-indigo-600 border-none dark:text-slate-300 ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
               v-model="payload.email"
             />
           </label>
           <label class="flex w-full flex-col mt-4">
-            <span class="font-semibold tracking-wide text-slate-600"
+            <span class="font-semibold tracking-wide text-slate-600 dark:text-slate-300"
               >Username
             </span>
             <input
               type="text"
-              class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
+              class="w-full p-2 mt-1 ring-2 dark:bg-slate-900 dark:ring-slate-700 dark:focus:ring-indigo-600 border-none dark:text-slate-300 ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
               v-model="payload.username"
             />
           </label>
         </div>
         <div class="w-full md:flex items-center gap-x-4">
           <label class="flex w-full flex-col mt-4">
-            <span class="font-semibold tracking-wide text-slate-600"
+            <span class="font-semibold tracking-wide text-slate-600 dark:text-slate-300"
               >Password
             </span>
             <input
               type="password"
-              class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
+              class="w-full p-2 mt-1 ring-2 dark:bg-slate-900 dark:ring-slate-700 dark:focus:ring-indigo-600 border-none dark:text-slate-300 ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
               v-model="payload.password"
             />
           </label>
           <label class="flex w-full flex-col mt-4">
-            <span class="font-semibold tracking-wide text-slate-600"
+            <span class="font-semibold tracking-wide text-slate-600 dark:text-slate-300"
               >Confirm Password
             </span>
             <input
               type="password"
-              class="w-full p-2 mt-1 ring-2 border-none ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
+              class="w-full p-2 mt-1 ring-2 dark:bg-slate-900 dark:ring-slate-700 dark:focus:ring-indigo-600 border-none dark:text-slate-300 ring-slate-300 rounded-md focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-500"
               v-model="confirmPassword"
             />
           </label>
         </div>
       <div class="mt-4 flex w-auto ml-auto gap-2 items-center">
-        <span class="font-semibold tracking-wide text-slate-600"
+        <span class="font-semibold tracking-wide text-slate-600 dark:text-slate-300"
           >Already have an account?
         </span>
         <NuxtLink
           to="/auth"
-          class="text-slate-600 font-semibold tracking-wide hover:underline hover:text-indigo-600"
+          class="text-slate-600 dark:text-slate-400 font-semibold tracking-wide hover:underline hover:text-indigo-600"
           >Sign In
         </NuxtLink>
       </div>

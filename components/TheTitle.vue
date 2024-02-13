@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-lg font-bold tracking-wide text-slate-700 py-2 px-4">
+  <h1 class="text-lg font-bold tracking-wide text-slate-700 dark:text-slate-300 py-2 px-4">
     {{ title ? title : 'Recommended for you'}}
   </h1>
 </template>

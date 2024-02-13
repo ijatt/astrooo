@@ -28,13 +28,13 @@
         </button>
       </div>
     </div>  
-    <div class="p-4 border-b border-slate-200">
-      <h1 class="text-2xl font-bold tracking-wide text-slate-700">{{ user.first_name }} {{ user.last_name }}</h1>
-      <p class="text-slate-600">@{{ user.username }}</p>
-      <p class="text-slate-600 mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+    <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+      <h1 class="text-2xl font-bold tracking-wide text-slate-700 dark:text-slate-300">{{ user.first_name }} {{ user.last_name }}</h1>
+      <p class="text-slate-600 dark:text-slate-300">@{{ user.username }}</p>
+      <p class="text-slate-600 dark:text-slate-300 mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
       <div class="flex gap-x-2 mt-4 items-center">
-        <Icon name="mdi:calendar" class="w-5 h-5 text-slate-600" />
-        <p v-if="user.created_at" class="text-slate-600">Joined {{ date }}</p>
+        <Icon name="mdi:calendar" class="w-5 h-5 text-slate-600 dark:text-slate-300" />
+        <p v-if="user.created_at" class="text-slate-600 dark:text-slate-300">Joined {{ date }}</p>
       </div>
     </div>
     <div class="">
@@ -47,28 +47,24 @@
 </template>
 
 <script lang="ts" setup>
-import astro from "~/public/astro.json";
-import { Vue3Lottie } from "vue3-lottie";
+import { Vue3Lottie } from 'vue3-lottie';
+import astro from '~/public/astro.json';
 import type { UserProfile } from '~/types/user';
 definePageMeta({
     layout: "default",
 })
 
 const route = useRoute()
+const { data, error, refresh } = await useFetch(`/api/user/${route.params.username}`);
 const config = useRuntimeConfig()
-const user = ref<UserProfile>({} as UserProfile);
+const user = ref<UserProfile>(data.value as UserProfile);
 const date = ref("")
 const open = ref(false)
 
 onMounted(async () => {
-  const { username } = route.params
-  user.value = await $fetch(`/api/user/${username}`, {
-    method: "GET"
-  }).catch(async (error) => {
-    if (error.statusCode === 404) {
-      await navigateTo("/")
-    }
-  }) as UserProfile;
+  if (error.value) {
+    await navigateTo("/")
+  }
   date.value = useDateFormat(user.value.created_at, "MMMM YYYY") as unknown as string;    
 })
 

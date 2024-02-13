@@ -45,7 +45,7 @@ export interface Users {
     image_url: string | null;
 }
 
-interface Like {
+export interface Like {
     id: number;
     user_id: number;
     post_id: number;
@@ -73,4 +73,8 @@ export interface Post {
     users: Users;
     likes?: Like[];
     comments?: Comment[];
+}
+
+export interface PostLikes {
+    likes: []
 }

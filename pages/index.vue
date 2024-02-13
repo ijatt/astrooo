@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-xl p-4 mx-auto">
-    <CreatePost @refresh="refresh" />
+    <CreatePost @refresh="refresh()" />
     <ThePost v-for="post in posts" :key="post.id" :post="post" />
     <div v-if="posts.length === 0">
       <ClientOnly>
@@ -20,17 +20,26 @@
 </template>
 
 <script lang="ts" setup>
+import { Vue3Lottie } from 'vue3-lottie';
+import astro from '~/public/astro.json';
 import type { UserData } from "~/types/user";
 import astro from "~/public/astro.json";
 import { Vue3Lottie } from "vue3-lottie";
 import type { Post } from "~/types/post";
+
 definePageMeta({
   middleware: "auth",
   layout: "default",
 });
 
+const { data, error, refresh } = await useFetch("/api/post/get-post", {
+  key: "posts",
+});
+
 const user = ref<UserData>({} as UserData);
-const posts = ref<Post[]>([]);
+const posts = ref<Post[]>(data.value as Post[]);
+const { y } = useWindowScroll();
+
 onMounted(async () => {
   user.value = await $fetch<UserData>("api/user", {
     method: "GET",
@@ -38,15 +47,15 @@ onMounted(async () => {
       authorization: `Bearer ${useTokenStore().accessToken}`,
     },
   });
-  posts.value = await $fetch<Post[]>("api/post/get-post", {
-    method: "GET",
-  });
   userStore().setUser(user.value);
+  y.value = useScrollStore().scroll;
 });
 
-const refresh =  async () => {
-  posts.value = await $fetch<Post[]>("api/post/get-post", {
-    method: "GET",
-  });
-}
+watchEffect(() => {
+  posts.value = data.value as Post[];  
+});
+
+onBeforeUnmount(() => {
+  useScrollStore().scroll = y.value;
+})
 </script>

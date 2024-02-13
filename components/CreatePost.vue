@@ -11,7 +11,7 @@
           @input="resizeTextarea"
           ref="textarea"
           v-model="payload.content"
-          class="w-full p-2 mt-1 border-none ring-slate-300 rounded-md focus:ring-0 focus:outline-none text-slate-500 shadow-inner"
+          class="w-full p-2 mt-1 border-none bg-transparent ring-slate-300 rounded-md focus:ring-0 focus:outline-none text-slate-500 dark:text-slate-300 shadow-inner dark:placeholder:text-slate-400"
           placeholder="What's on your mind?"
         ></textarea>
         <input type="file" ref="file" hidden @change="hanldeChange" multiple />
@@ -31,22 +31,22 @@
             </button>
           </div>
         </div>
-        <div class="flex justify-between border-y border-slate-100 py-2">
+        <div class="flex justify-between border-y border-slate-100 dark:border-slate-700 py-2">
           <div class="flex gap-x-2 items-center">
             <button
               @click="file?.click()"
-              class="rounded-full flex items-center p-2 hover:bg-indigo-200"
+              class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
               type="button"
             >
               <Icon name="mdi:image-outline" class="w-5 h-5 text-indigo-600" />
             </button>
             <button
-              class="rounded-full flex items-center p-2 hover:bg-indigo-200"
+              class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
             >
               <Icon name="mdi:video-outline" class="w-5 h-5 text-indigo-600" />
             </button>
             <button
-              class="rounded-full flex items-center p-2 hover:bg-indigo-200"
+              class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
             >
               <Icon
                 name="mdi:emoticon-outline"
