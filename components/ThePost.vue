@@ -13,7 +13,7 @@
             </p>
           </div>
           <p class="text-sm tracking-wide text-slate-500 dark:text-slate-400">
-            <b>·</b> {{ getHour() }}h ago
+            <b>·</b> {{ getHour }}
           </p>
         </div>
         <UDropdown
@@ -67,7 +67,7 @@
         </p>
       </div>
       <div class="flex items-center group cursor-pointer">
-        <button class="flex items-center text-slate-600 dark:text-slate-400 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 dark:group-hover:bg-indigo-400 group-hover:text-indigo-600">
+        <button @click="startShare" :disabled="!isSupported" class="flex items-center text-slate-600 dark:text-slate-400 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 dark:group-hover:bg-indigo-400 group-hover:text-indigo-600">
           <Icon name="mdi:share-outline" class="w-5 h-5" />
         </button>
         <p
@@ -87,11 +87,7 @@ const props = defineProps<{
 }>();
 
 const postDetail = ref<Post>(props.post);
-const getHour = () => {
-  const date = new Date(props.post.created_at);
-  const hours = Math.abs(date.getHours() - new Date().getHours());
-  return hours;
-}
+const getHour = useTimeAgo(postDetail.value.created_at);
 const config = useRuntimeConfig()
 
 const rawItems = [
@@ -151,5 +147,15 @@ const likePost = async() => {
 
 const goTo = async () => {
   await navigateTo(`/${props.post.users.username}/post/${props.post.id}`)
+}
+
+const { share, isSupported } = useShare();
+
+const startShare = () => {
+  share({
+    title: 'Share this post',
+    text: 'Check out this post',
+    url: `/${props.post.users.username}/post/${props.post.id}`,
+  })
 }
 </script>
