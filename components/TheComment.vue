@@ -13,7 +13,7 @@
             </p>
           </div>
           <p class="text-sm tracking-wide text-slate-500 dark:text-slate-400">
-            <b>·</b> {{ getHour() }}h ago
+            <b>·</b> {{ getHour }}
           </p>
         </div>
         <UDropdown
@@ -45,11 +45,7 @@ const props = defineProps<{
   comment: Comment;
 }>();
 
-const getHour = () => {
-  const date = new Date(props.comment.created_at);
-  const hours = Math.abs(date.getHours() - new Date().getHours());
-  return hours;
-}
+const getHour = useTimeAgo(props.comment.created_at);
 const config = useRuntimeConfig()
 
 const rawItems = [
