@@ -87,7 +87,7 @@ import type { Post, Users, Like, Comment } from '~/types/post';
 
 const { id } = useRoute().params
 const { data: posts } = useNuxtData<Post[]>("posts");
-const { data } = useLazyFetch<Post>(`/api/post/${id}`, {
+const { data } = await useLazyFetch<Post>(`/api/post/${id}`, {
   key: `post-${id}`,
   // @ts-ignore
   default() {
