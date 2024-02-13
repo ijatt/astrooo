@@ -1,5 +1,17 @@
 <template>
-  <div class="max-w-xl mx-auto">
+  <ClientOnly v-if="!user.username">
+    <Vue3Lottie 
+      :animation-data="astro"
+      :speed="1"
+      :loop="true"
+      :autoplay="true"
+      style="width: 300px; height: 300px;"
+    />
+    <p class="text-slate-600 text-center italic">
+      Loading...
+    </p>
+  </ClientOnly>
+  <div v-else class="max-w-xl mx-auto">
     <img src="/background.png" class="w-full h-[200px] object-cover" alt="">
     <div class="p-4 flex justify-between">
       <div class="w-36 h-36 -mt-[86px] bg-white border border-slate-200 rounded-full p-1">
