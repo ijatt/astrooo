@@ -24,10 +24,10 @@
     <p class="mt-4 text-sm font-semibold tracking-wide text-slate-500">{{ useDateFormat(post.created_at, 'hh:mm - DD/MM/YYYY') }}</p>
     <div class="mt-2 pb-2 flex justify-between border-b border-slate-200">
       <div class="flex items-center group cursor-pointer">
-        <button @click="" v-if="isLiked" class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
+        <button @click="likePost" v-if="isLiked" class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
           <Icon name="mdi:heart" class="w-5 h-5 text-indigo-600" />
         </button>
-        <button @click="" v-else class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
+        <button @click="likePost" v-else class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
           <Icon name="mdi:heart-outline" class="w-5 h-5" />
         </button>
         <p
@@ -60,7 +60,9 @@
     <div class="">
       <TheComment v-for="comment in post.comments" :key="comment.id" :comment="comment" />
     </div>
-    <UModal v-model="open">
+    <UModal v-model="open" :ui="{
+      container: 'flex min-h-full items-end items-center justify-center text-center'
+    }">
       <form @submit.prevent="submitComment" class="p-2">
         <textarea
           @input="resizeTextarea"
@@ -81,26 +83,34 @@
 </template>
 
 <script lang="ts" setup>
-import type { Post, Users } from '~/types/post';
+import type { Post, Users, Like, Comment } from '~/types/post';
 
+const { id } = useRoute().params
+const { data: posts } = useNuxtData<Post[]>("posts");
+const { data } = useLazyFetch<Post>(`/api/post/${id}`, {
+  key: `post-${id}`,
+  // @ts-ignore
+  default() {
+      return posts.value?.find((post) => post.id === Number(id));
+  },
+})
 const post = ref<Post>({
   id: 0,
-  content: '',
-  user_id: 0,
+  content: "",
   created_at: new Date(),
-  updated_at: new Date(),
+  updated_at: new Date(), // Add the missing updated_at property
+  user_id: 0,
   users: {} as Users,
   images: [],
+  likes: [] as Like[],
+  comments: [] as Comment[],
 } as Post)
 
 const formattedDate = ref("")
-const route = useRoute()
 const config = useRuntimeConfig()
 const open = ref(false)
 onMounted(async () => {
-  post.value = await $fetch(`/api/post/${route.params.id}`, {
-    method: "GET",
-  });
+  post.value = data.value as Post;
   formattedDate.value = useDateFormat(post.value.created_at, "hh:mm - DD/MM/YYYY") as any;
   payload.post_id = post.value.id;
 })
@@ -133,12 +143,22 @@ const loading = ref(false)
 
 const submitComment = async () => {
   loading.value = true;
-  post.value = await $fetch("/api/comment/create", {
+  post.value.comments = await $fetch<Comment[]>("/api/comment/create", {
     method: "POST",
     body: payload
   })
   open.value = false;
   loading.value = false;
+  payload.content = "";
 }
 
+const likePost = async() => {
+  post.value.likes = await $fetch<Like[]>(`/api/post/like-post`, {
+    method: "POST",
+    body: JSON.stringify({
+      post_id: post.value.id,
+      user_id: userStore().user?.id
+    })
+  });
+}
 </script>
