@@ -24,7 +24,7 @@
     <p class="mt-4 text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400">{{ useDateFormat(post.created_at, 'hh:mm - DD/MM/YYYY') }}</p>
     <div class="mt-2 pb-2 flex justify-between border-b border-slate-200 dark:border-slate-700">
       <div class="flex items-center group cursor-pointer">
-        <button @click="likePost" v-if="isLiked" class="flex items-center text-slate-600 dark:text-slate-400  font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
+        <button @click="likePost" v-if="isLiked" class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">
           <Icon name="mdi:heart" class="w-5 h-5 text-indigo-600" />
         </button>
         <button @click="likePost" v-else class="flex items-center text-slate-600 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 group-hover:text-indigo-600">

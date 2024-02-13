@@ -16,6 +16,11 @@
         </p>
       </ClientOnly>
     </div>
+    <NuxtLink
+      to="/dsdasda"
+    >
+      dsda
+    </NuxtLink>
   </div>
 </template>
 
@@ -23,8 +28,6 @@
 import { Vue3Lottie } from 'vue3-lottie';
 import astro from '~/public/astro.json';
 import type { UserData } from "~/types/user";
-import astro from "~/public/astro.json";
-import { Vue3Lottie } from "vue3-lottie";
 import type { Post } from "~/types/post";
 
 definePageMeta({
