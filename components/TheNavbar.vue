@@ -4,7 +4,7 @@
       <Icon
         name="fa6-solid:user-astronaut"
         size="32"
-        class="text-indigo-600 animate-spin"
+        class="text-indigo-600"
       />
       <h1 class="text-xl font-bold text-slate-700 dark:text-slate-300 tracking-wide">ASTROOO</h1>
     </div>

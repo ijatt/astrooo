@@ -19,12 +19,14 @@
     "@vueuse/core": "^10.7.2",
     "@vueuse/nuxt": "^10.7.2",
     "nuxt": "^3.10.0",
+    "nuxt-emoji": "^1.0.1",
     "nuxt-icon": "^0.6.8",
     "prisma": "^5.9.1",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@morev/vue-transitions": "^2.3.6",
     "@nuxt/ui": "^2.13.0",
     "@pinia/nuxt": "^0.5.1",
     "@supabase/supabase-js": "^2.39.3",

@@ -55,11 +55,28 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { data, error, refresh } = await useFetch(`/api/user/${route.params.username}`);
+const { data } = useNuxtData(`user-${route.params.username}`)
+const { data: userData, error, refresh } = await useFetch(`/api/user/${route.params.username}`, {
+  key: `user-${route.params.username}`,
+  default() {
+    return data.value as UserProfile;
+  }
+});
 const config = useRuntimeConfig()
-const user = ref<UserProfile>(data.value as UserProfile);
+const user = ref<UserProfile>(userData.value as UserProfile);
 const date = ref("")
 const open = ref(false)
+
+useHead({
+  title: `${user.value.first_name} ${user.value.last_name} (@${user.value.username})`,
+  meta: [
+    {
+      hid: "description",
+      name: "description",
+      content: `View ${user.value.first_name} ${user.value.last_name}'s profile on ASTROOO.`
+    }
+  ]
+})
 
 onMounted(async () => {
   if (error.value) {
@@ -69,9 +86,8 @@ onMounted(async () => {
 })
 
 const closeModal = async () => {
-  user.value = await $fetch<UserProfile>(`/api/user/${user.value.username}`, {
-    method: "GET"
-  });
+  await refresh();
+  user.value = userData.value as UserProfile;
   open.value = false
 }
 </script>

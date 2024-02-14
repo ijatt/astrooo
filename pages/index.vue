@@ -1,12 +1,12 @@
 <template>
   <div class="max-w-xl p-4 mx-auto">
     <CreatePost @refresh="refresh()" />
-    <ThePost v-for="post in posts" :key="post.id" :post="post" />
-    <div v-if="posts.length === 0">
+    <ThePost @refresh="refresh()" v-for="post in posts" :key="post.id" :post="post" />
+    <div v-if="!posts">
       <ClientOnly>
         <Vue3Lottie 
           :animation-data="astro"
-          :speed="1"
+          :speed="1"  
           :loop="true"
           :autoplay="true"
           style="width: 300px; height: 300px;"
@@ -35,12 +35,26 @@ definePageMeta({
   layout: "default",
 });
 
-const { data, error, refresh } = await useFetch("/api/post/get-post", {
+useHead({
+  title: "ASTROOO - Home",
+  meta: [
+    {
+      name: "description",
+      content: "POST YOUR THOUGHTS AND IDEAS",
+    },
+  ],
+})
+
+const { data } = useNuxtData<Post[]>("posts");
+const { data: postData, error, refresh } = await useLazyFetch("/api/post/get-post", {
   key: "posts",
+  default() {
+    return data.value as Post[];
+  },
 });
 
 const user = ref<UserData>({} as UserData);
-const posts = ref<Post[]>(data.value as Post[]);
+const posts = ref<Post[]>(postData.value as Post[]);
 const { y } = useWindowScroll();
 
 onMounted(async () => {
@@ -55,7 +69,9 @@ onMounted(async () => {
 });
 
 watchEffect(() => {
-  posts.value = data.value as Post[];  
+  posts.value = postData.value as Post[]; 
+  console.log("watched");
+   
 });
 
 onBeforeUnmount(() => {
