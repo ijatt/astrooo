@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-xl p-4 mx-auto">
     <CreatePost @refresh="refresh()" />
-    <ThePost v-for="post in posts" :key="post.id" :post="post" />
+    <ThePost @refresh="refresh()" v-for="post in posts" :key="post.id" :post="post" />
     <div v-if="posts.length === 0">
       <ClientOnly>
         <Vue3Lottie 
@@ -16,11 +16,6 @@
         </p>
       </ClientOnly>
     </div>
-    <NuxtLink
-      to="/dsdasda"
-    >
-      dsda
-    </NuxtLink>
   </div>
 </template>
 
@@ -35,15 +30,20 @@ definePageMeta({
   layout: "default",
 });
 
-const { data, error, refresh } = await useFetch("/api/post/get-post", {
+const { data } = useNuxtData<Post[]>("posts");
+const { data: postData, error, refresh } = await useLazyFetch("/api/post/get-post", {
   key: "posts",
+  default() {
+    return data.value as Post[];
+  },
 });
 
 const user = ref<UserData>({} as UserData);
-const posts = ref<Post[]>(data.value as Post[]);
+const posts = ref<Post[]>(postData.value as Post[]);
 const { y } = useWindowScroll();
 
 onMounted(async () => {
+  y.value = useScrollStore().scroll;
   user.value = await $fetch<UserData>("api/user", {
     method: "GET",
     headers: {
@@ -51,11 +51,12 @@ onMounted(async () => {
     },
   });
   userStore().setUser(user.value);
-  y.value = useScrollStore().scroll;
 });
 
 watchEffect(() => {
-  posts.value = data.value as Post[];  
+  posts.value = postData.value as Post[]; 
+  console.log("watched");
+   
 });
 
 onBeforeUnmount(() => {
