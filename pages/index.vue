@@ -16,11 +16,6 @@
         </p>
       </ClientOnly>
     </div>
-    <NuxtLink
-      to="/dsdasda"
-    >
-      dsda
-    </NuxtLink>
   </div>
 </template>
 
@@ -69,9 +64,7 @@ onMounted(async () => {
 });
 
 watchEffect(() => {
-  posts.value = postData.value as Post[]; 
-  console.log("watched");
-   
+  posts.value = postData.value as Post[];    
 });
 
 onBeforeUnmount(() => {
