@@ -48,19 +48,15 @@
             >
               <Icon name="mdi:video-outline" class="w-5 h-5 text-indigo-600" />
             </button>
-            <NuxtEmoji @on-select="select" :theme="isDark ? 'dark' : 'light'">
-              <template #button>
-                <button
-                  type="button"
-                  class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
-                >
-                  <Icon
-                    name="mdi:emoticon-outline"
-                    class="w-5 h-5 text-indigo-600"
-                  />
-                </button>
-              </template>
-            </NuxtEmoji>
+            <button
+              type="button"
+              class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
+            >
+              <Icon
+                name="mdi:emoticon-outline"
+                class="w-5 h-5 text-indigo-600"
+              />
+            </button>
           </div>
           <button
             class="py-2 px-4 text-sm bg-indigo-600 text-white font-semibold tracking-wide rounded-full focus:outline-none disabled:opacity-50"
