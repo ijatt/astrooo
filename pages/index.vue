@@ -43,7 +43,6 @@ const posts = ref<Post[]>(postData.value as Post[]);
 const { y } = useWindowScroll();
 
 onMounted(async () => {
-  y.value = useScrollStore().scroll;
   user.value = await $fetch<UserData>("api/user", {
     method: "GET",
     headers: {
@@ -51,6 +50,7 @@ onMounted(async () => {
     },
   });
   userStore().setUser(user.value);
+  y.value = useScrollStore().scroll;
 });
 
 watchEffect(() => {
