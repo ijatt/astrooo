@@ -1,4 +1,5 @@
 import prisma from "~/server/db/prisma";
+import { Prisma } from "@prisma/client";
 
 interface CommentRequest {
   content: string;
@@ -45,6 +46,11 @@ export default defineEventHandler(async (event) => {
 
     return post.comments;
   } catch (error) {
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return createError({statusCode: 500, message: error.message})
+    }
+
     return createError({
       statusCode: 500,
       statusMessage: "Internal Server Error",

@@ -10,27 +10,29 @@
         <textarea
           @input="resizeTextarea"
           ref="textarea"
-          v-model="payload.content"
+          v-model="content"
           class="w-full p-2 mt-1 border-none bg-transparent ring-slate-300 rounded-md focus:ring-0 focus:outline-none text-slate-500 dark:text-slate-300 shadow-inner dark:placeholder:text-slate-400"
           placeholder="What's on your mind?"
         ></textarea>
         <input type="file" ref="file" hidden @change="hanldeChange" multiple />
-          <div class="columns-2" v-if="imgSrc?.length">
+        <TransitionFade>
+          <div class="columns-2 mb-2" v-if="imgSrc?.length">
             <div class="relative" v-for="(item, index) in imgSrc">
-            <img
-              :src="item"
-              class="border border-slate-200 rounded-md w-full object-cover mb-2"
-              alt=""
-            />
-            <button
-              class="text-indigo-600 hover:bg-indigo-200 rounded-full flex items-center p-1 absolute top-0 right-0"
-              @click="deleteImage(index)"
-              type="button"
-            >
-              <Icon name="mdi:close" class="w-6 h-6" />
-            </button>
+              <img
+                :src="item"
+                class="border border-slate-200 rounded-md w-full object-cover mb-2 dark:border-slate-700"
+                alt=""
+              />
+              <button
+                class="text-indigo-600 hover:bg-indigo-200 rounded-full flex items-center p-1 absolute top-0 right-0"
+                @click="deleteImage(index)"
+                type="button"
+              >
+                <Icon name="mdi:close" class="w-6 h-6" />
+              </button>
+            </div>
           </div>
-        </div>
+        </TransitionFade>
         <div class="flex justify-between border-y border-slate-100 dark:border-slate-700 py-2">
           <div class="flex gap-x-2 items-center">
             <button
@@ -41,21 +43,27 @@
               <Icon name="mdi:image-outline" class="w-5 h-5 text-indigo-600" />
             </button>
             <button
+              type="button"
               class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
             >
               <Icon name="mdi:video-outline" class="w-5 h-5 text-indigo-600" />
             </button>
-            <button
-              class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
-            >
-              <Icon
-                name="mdi:emoticon-outline"
-                class="w-5 h-5 text-indigo-600"
-              />
-            </button>
+            <NuxtEmoji @on-select="select" :theme="isDark ? 'dark' : 'light'">
+              <template #button>
+                <button
+                  type="button"
+                  class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
+                >
+                  <Icon
+                    name="mdi:emoticon-outline"
+                    class="w-5 h-5 text-indigo-600"
+                  />
+                </button>
+              </template>
+            </NuxtEmoji>
           </div>
           <button
-            class="py-2 px-4 text-sm bg-indigo-600 text-white font-semibold tracking-wide rounded-full focus:outline-none"
+            class="py-2 px-4 text-sm bg-indigo-600 text-white font-semibold tracking-wide rounded-full focus:outline-none disabled:opacity-50"
           >
             <Icon v-if="loading" name="line-md:loading-alt-loop" />
             <span v-else>Post</span>
@@ -73,6 +81,8 @@ const imgSrc = ref<string[]>([]);
 const image = ref<File[] | null>([]);
 const loading = ref(false)
 const emit = defineEmits(["refresh"]);
+const isDark = useDark();
+const content = ref("")
 
 const file = ref<HTMLInputElement | null>(null);
 const hanldeChange = () => {
@@ -96,11 +106,15 @@ const deleteImage = (index: number) => {
 };
 
 const reset = () => {
-  payload.value.content = "";
+  content.value = "";
   payload.value.image_url = [];
   image.value = [];
   imgSrc.value = [];
 }
+
+function select(emoji: string) {
+  content.value += emoji;  
+};
 
 function resizeTextarea() {
   if (!textarea.value) return;
@@ -109,7 +123,7 @@ function resizeTextarea() {
 }
 
 const payload = computed(():PostRequest =>({
-  content: "",
+  content: content.value,
   image_url: [],
   user_id: userStore().user?.id as number,
 }));
