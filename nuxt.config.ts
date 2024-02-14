@@ -18,6 +18,5 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
     '@morev/vue-transitions/nuxt',
-  ],
-  extends: ['nuxt-emoji']
+  ]
 })
