@@ -2,7 +2,7 @@
   <div class="max-w-xl p-4 mx-auto">
     <CreatePost @refresh="refresh()" />
     <ThePost @refresh="refresh()" v-for="post in posts" :key="post.id" :post="post" />
-    <div v-if="posts.length === 0">
+    <div v-if="!posts">
       <ClientOnly>
         <Vue3Lottie 
           :animation-data="astro"
