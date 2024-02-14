@@ -1,10 +1,10 @@
 <template>
-  <div class="p-4 border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer">
+  <div class="p-4 border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer" @click.self="goTo">
     <div class="flex items-center gap-2">
       <img class="w-10 h-10 rounded-full object-cover"
       :src="post.users.image_url ? `${$config.public.BUCKET_URL}/avatars/${post.users.image_url}` : '/profile.png' "
       />
-      <div class="flex w-full justify-between">
+      <div class="flex w-full justify-between" @click.self="goTo">
         <div class="flex gap-x-2 items-center">
           <div class="flex gap-x-2 items-center" @click="navigateTo(`/${post.users.username}`)">
             <h1 class="font-semibold hover:underline tracking-wide text-slate-600 dark:text-slate-300">{{fullName}}</h1>
@@ -33,17 +33,20 @@
         </UDropdown>
       </div>
     </div>
-    <div class="mt-4 space-y-2" @click="goTo">
+    <div class="mt-4 space-y-2">
       <p class="text-slate-600 dark:text-slate-300 break-words">
         {{ post.content }}
       </p>
       <div class="grid grid-flow-col gap-2" v-if="post.images?.length">
         <template v-for="img in post.images">
-          <img :src="`${config.public.BUCKET_URL}/posts/${img.image_url}`" class="hover:shadow-md object-cover m-auto rounded-md border-slate-200" alt="" />
+          <NuxtImg @click="openImage(img.image_url)" :src="`${config.public.BUCKET_URL}/posts/${img.image_url}`" 
+            class="hover:shadow-md object-cover  m-auto rounded-md border-slate-200"
+            sizes="100vw"  
+          />
         </template>
       </div>
     </div>
-    <div class="mt-2 flex justify-between">
+    <div class="mt-2 flex justify-between" @click.self="goTo">
       <div class="flex items-center group cursor-pointer">
         <button @click="likePost" v-if="isLiked" class="flex items-center text-slate-600 dark:text-slate-400 font-semibold p-1.5 rounded-full group-hover:bg-indigo-200 dark:group-hover:bg-indigo-400 group-hover:text-indigo-600">
           <Icon name="mdi:heart" class="w-5 h-5 text-indigo-600" />
@@ -78,6 +81,24 @@
         </p>
       </div>
     </div>
+    <UModal v-model="open" :ui="{
+      container: 'flex min-h-full items-end items-center justify-center text-center'
+    }">
+      <UCard>
+        <template #header>
+          <div class="flex justify-end items-center">
+            <button
+              class="text-indigo-600 dark:text-indigo-400 focus:outline-none hover:bg-indigo-200 rounded-full flex items-center p-1"
+              @click="open = false"
+              type="button"
+            >
+              <Icon name="mdi:close" class="w-6 h-6" />
+            </button>
+          </div>
+        </template>
+        <NuxtImg :src="imagePreview" class="w-full" />
+      </UCard>
+    </UModal>
   </div>
 </template>
 
@@ -87,17 +108,23 @@ const props = defineProps<{
   post: Post;
 }>();
 
+const config = useRuntimeConfig()
 const emit = defineEmits(['refresh']);
-
+const open = ref(false);
+const imagePreview = ref(`${config.public.BUCKET_URL}/posts/`)
 const postDetail = ref<Post>(props.post);
 const getHour = useTimeAgo(postDetail.value.created_at);
-const config = useRuntimeConfig()
+
+const openImage = (image: string) => {
+  imagePreview.value = `${config.public.BUCKET_URL}/posts/${image}`
+  open.value = true;
+}
 
 const rawItems = [
   [{
     label: 'Edit',
     icon: 'i-heroicons-pencil-square',
-    onClick: () => {
+    click: () => {
       console.log('Edit');
     },
   }],
@@ -105,8 +132,8 @@ const rawItems = [
     label: 'Delete',
     icon: 'i-heroicons-trash',
     color: 'red',
-    onClick: () => {
-      console.log('Delete');
+    click: () => {
+     deletePost()
     },
   }],
   [{
@@ -165,5 +192,22 @@ const startShare = () => {
     text: 'Check out this post',
     url: `/${props.post.users.username}/post/${props.post.id}`,
   })
+}
+
+const deletePost = async () => {
+  if (postDetail.value.images?.length) {
+    await deleteImage("posts", postDetail.value.images.map((img) => img.image_url));
+  }
+
+  const deleted = await $fetch(`/api/post/delete/`, {
+    method: "POST",
+    body: {
+      id: props.post.id
+    }
+  });
+  if (deleted) {
+    emit('refresh');
+    toastInfo("Post deleted.")
+  }
 }
 </script>

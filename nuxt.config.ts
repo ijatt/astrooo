@@ -12,12 +12,12 @@ export default defineNuxtConfig({
     }
   },
   modules: [
-    '@pinia/nuxt', 
+    '@pinia/nuxt',
     'nuxt-icon',
     '@nuxt/ui',
     '@pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
     '@morev/vue-transitions/nuxt',
-  ],
-  extends: ['nuxt-emoji']
+    "@nuxt/image"
+  ]
 })

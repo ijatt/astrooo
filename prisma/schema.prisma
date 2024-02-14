@@ -32,7 +32,7 @@ model posts {
     images     images[]
     created_at DateTime   @default(now())
     updated_at DateTime   @default(now())
-    users      users      @relation(fields: [user_id], references: [id])
+    users      users      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model comments {
@@ -42,8 +42,8 @@ model comments {
     post_id    Int
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
-    users      users    @relation(fields: [user_id], references: [id])
-    posts      posts    @relation(fields: [post_id], references: [id])
+    users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    posts      posts    @relation(fields: [post_id], references: [id], onDelete: Cascade)
 }
 
 model likes {
@@ -52,8 +52,8 @@ model likes {
     post_id    Int
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
-    users      users    @relation(fields: [user_id], references: [id])
-    posts      posts    @relation(fields: [post_id], references: [id])
+    users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    posts      posts    @relation(fields: [post_id], references: [id], onDelete: Cascade)
 }
 
 model images {
@@ -62,5 +62,5 @@ model images {
     post_id    Int
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
-    posts      posts    @relation(fields: [post_id], references: [id])
+    posts      posts    @relation(fields: [post_id], references: [id], onDelete: Cascade)
 }

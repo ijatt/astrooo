@@ -1,29 +1,41 @@
-export function toastSuccess(title:string, message: string) {
+export function toastSuccess(title:string, message?: string) {
   const toast = useToast()
-  toast.add({
-    title,
-    description: message,
-    color: "green",
-    icon: "i-heroicons-check-circle"
-  })
+  const toastOption = {
+    title: title,
+    icon: "i-heroicons-check-circle",
+    color: "green"
+  }
+
+  if (message) {
+    toastOption.description = message
+  }
+  toast.add(toastOption)
 }
 
-export function toastError(title:string, message: string) {
+export function toastError(title:string, message?: string) {
   const toast = useToast()
-  toast.add({
-    title,
-    description: message,
-    icon: "i-heroicons-x-circle",
-    color: "red"
-  })
+  const toastOption = {
+    title: title,
+    color: "red",
+    icon: "i-heroicons-x-circle"
+  }
+
+  if (message) {
+    toastOption.description = message
+  }
+
+  toast.add(toastOption)
 }
 
-export function toastInfo(title:string, message: string) {
+export function toastInfo(title:string, message?: string) {
   const toast = useToast()
-  toast.add({
-    title,
-    description: message,
-    icon: "i-heroicons-information-circle",
-    color: "indigo"
-  })
+  const toastOption = {
+    title: title,
+    color: "blue",
+    icon: "i-heroicons-information-circle"
+  }
+  if (message) {
+    toastOption.description = message
+  }
+  toast.add(toastOption)
 }

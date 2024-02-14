@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-xl p-4 mx-auto">
+  <div class="max-w-xl sm:p-4 mx-auto">
     <CreatePost @refresh="refresh()" />
     <ThePost @refresh="refresh()" v-for="post in posts" :key="post.id" :post="post" />
     <div v-if="!posts">

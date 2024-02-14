@@ -41,12 +41,9 @@
 
 <script lang="ts" setup>
 import type { Comment } from '~/types/post';
-const props = defineProps<{
-  comment: Comment;
-}>();
-
+const props = defineProps<{comment: Comment;}>();
+const emit = defineEmits(["refresh"]);
 const getHour = useTimeAgo(props.comment.created_at);
-const config = useRuntimeConfig()
 
 const rawItems = [
   [{
@@ -60,8 +57,8 @@ const rawItems = [
     label: 'Delete',
     icon: 'i-heroicons-trash',
     color: 'red',
-    onClick: () => {
-      console.log('Delete');
+    click: () => {
+      deletePost();
     },
   }],
   [{
@@ -80,5 +77,18 @@ const items = computed(() => {
     return rawItems.filter((item) => item[0].label !== 'Edit' && item[0].label !== 'Delete')
   }
 })
+
+const deletePost = async () => {
+  const deleted = await $fetch(`/api/comment/delete/`, {
+    method: "POST",
+    body: {
+      id: props.comment.id
+    }
+  });
+  if (deleted) {
+    emit('refresh');
+    toastInfo("Comment deleted.")
+  }
+}
 
 </script>

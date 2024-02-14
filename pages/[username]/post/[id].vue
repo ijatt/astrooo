@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="">
-      <TheComment v-for="comment in post.comments" :key="comment.id" :comment="comment" />
+      <TheComment @refresh="refresh()" v-for="comment in post.comments" :key="comment.id" :comment="comment" />
     </div>
     <UModal v-model="open" :ui="{
       container: 'flex min-h-full items-end items-center justify-center text-center'
@@ -152,6 +152,7 @@ const submitComment = async () => {
 
   if (comments) {
     post.value.comments = comments;
+    await useFetch('/api/post/get-post', {key: 'posts'})
   }
 
   open.value = false;
@@ -167,5 +168,11 @@ const likePost = async() => {
       user_id: userStore().user?.id
     })
   });
+
+  await useFetch('/api/post/get-post', {key: 'posts'})
 }
+
+watchEffect(() => {
+  post.value = data.value as Post
+})
 </script>

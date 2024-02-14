@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-x-4 w-full">
+  <div class="flex gap-x-4 p-4 sm:p-0  w-full">
     <img
       :src="userStore().user?.image_url ? `${$config.public.BUCKET_URL}/avatars/${userStore().user?.image_url}` : '/profile.png'"
       class="rounded-full w-10 h-10 object-cover"
@@ -44,27 +44,23 @@
             </button>
             <button
               type="button"
+              @click="toastInfo('Video', 'Coming soon')"
               class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
             >
               <Icon name="mdi:video-outline" class="w-5 h-5 text-indigo-600" />
             </button>
-            <NuxtEmoji @on-select="select" :theme="isDark ? 'dark' : 'light'">
-              <template #button>
-                <button
-                  type="button"
-                  class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
-                >
-                  <Icon
-                    name="mdi:emoticon-outline"
-                    class="w-5 h-5 text-indigo-600"
-                  />
-                </button>
-              </template>
-            </NuxtEmoji>
+            <button
+              @click="toastInfo('Emoji', 'Coming soon')"
+              type="button"
+              class="rounded-full flex items-center p-2 hover:bg-indigo-200 dark:hover:bg-indigo-400"
+            >
+              <Icon
+                name="mdi:emoticon-outline"
+                class="w-5 h-5 text-indigo-600"
+              />
+            </button>
           </div>
-          <button
-            class="py-2 px-4 text-sm bg-indigo-600 text-white font-semibold tracking-wide rounded-full focus:outline-none disabled:opacity-50"
-          >
+          <button class="py-2 px-4 text-sm bg-indigo-600 text-white font-semibold tracking-wide rounded-full focus:outline-none disabled:opacity-50">
             <Icon v-if="loading" name="line-md:loading-alt-loop" />
             <span v-else>Post</span>
           </button>
@@ -146,7 +142,7 @@ const createPost = async () => {
   })
 
   if (post) {
-    toastSuccess("Post Success", "You have successfully posted");
+    toastInfo("Post created.");
     reset();
     emit("refresh");
     textarea.value?.style.setProperty("height", "auto");
