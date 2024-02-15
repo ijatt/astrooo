@@ -53,3 +53,11 @@ export interface UserUpdateRequest {
     last_name: string;
     image_url: string;
 }
+
+export interface UserSearchResult {
+    id: number;
+    username: string;
+    first_name: string;
+    last_name: string;
+    image_url: string;
+}

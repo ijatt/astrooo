@@ -26,11 +26,12 @@
         Search
       </NuxtLink>
       <NuxtLink
-        to="/"
-        class="text-slate-600 flex items-center font-semibold tracking-wide hover:text-indigo-600"
+        :to="`/${userStore().user?.username}`"
+        class="flex items-center font-semibold tracking-wide hover:text-indigo-600"
+        :class="route.path === `/${userStore().user?.username}` ? 'text-indigo-600' : 'text-slate-600 dark:text-slate-400'"
       >
         <Icon name="mdi:account" size="20" />
-        About
+        Profile
       </NuxtLink>
     </div>
     <div class="hidden md:flex gap-2 items-center">
@@ -93,7 +94,7 @@
             Search
           </NuxtLink>
           <NuxtLink
-            to="/"
+            :to="`/${userStore().user?.username}`"
             class="text-slate-600 gap-x-2 flex w-full py-4 px-8 hover:bg-slate-100 items-center font-semibold tracking-wide hover:text-indigo-600"
           >
             <Icon name="mdi:account" size="20" />

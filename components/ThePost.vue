@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="mt-4 space-y-2">
-      <p class="text-slate-600 dark:text-slate-300 break-words">
+      <p class="text-slate-600 dark:text-slate-300 break-words" @click.self="goTo">
         {{ post.content }}
       </p>
       <div class="grid grid-flow-col gap-2" v-if="post.images?.length">
