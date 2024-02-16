@@ -4,8 +4,8 @@
     <div class="max-h-[calc(100vh-200px)] overflow-y-auto">
       <TheTitle />
       <RecommendedPost topic="Taib" />
-      <RecommendedPost topic="Lancau" />
-      <RecommendedPost topic="Lan" />
+      <RecommendedPost topic="Messi" />
+      <RecommendedPost topic="Tun Laila dah explain" />
       <TheTitle title="Trending posts" />
     </div>
   </div>
