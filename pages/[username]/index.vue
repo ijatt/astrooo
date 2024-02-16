@@ -20,7 +20,9 @@
         />
       </div>
       <div>
-        <button v-if="userStore().user?.id !== user.id" class="py-1 px-4 bg-indigo-600 text-white font-semibold tracking-wide rounded-full  focus:outline-none">
+        <button  v-if="userStore().user?.id !== user.id" class="py-1 px-4 bg-indigo-600 text-white font-semibold tracking-wide rounded-full  focus:outline-none"
+          @click="toastInfo('Feature not available yet (idk how to design the database)')"
+        >
           Follow
         </button>
         <button @click="open = true" v-else class="py-1 px-4 bg-indigo-600 text-white font-semibold tracking-wide rounded-full  focus:outline-none">

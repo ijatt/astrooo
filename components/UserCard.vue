@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-md mr-2 border border-slate-200 dark:border-slate-700 max-w-[250px]">
+  <div class="rounded-md mr-2 cursor-pointer border border-slate-200 dark:border-slate-700 max-w-[250px]">
     <img src="/background.png" class="w-full h-[100px] object-cover" alt="">
     <div class="flex justify-between">
       <div class="w-16 h-16 -mt-[34px] ml-4 bg-white border border-slate-200 rounded-full p-1">

@@ -34,7 +34,7 @@
             <div class="flex items-center">
               <Icon name="mdi:clock-outline" class="w-6 h-6" />
               <p class="ml-2 text-slate-600 dark:text-slate-300 font-semibold tracking-wide">
-                Lancau
+                hehe
               </p>
             </div>
             <button
@@ -63,6 +63,14 @@
                 @{{ user.username }}
               </p>
             </div>
+          </div>
+          <div
+              @click="navigateTo(`/search/results?q=${query}`)"
+              class="flex items-center gap-x-2 p-4 hover:bg-slate-100 dark:hover:bg-slate-900 cursor-pointer"
+            >
+            <p class="text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400">
+              See all results for "{{ query }}"
+            </p>
           </div>
         </div>
       </div>
