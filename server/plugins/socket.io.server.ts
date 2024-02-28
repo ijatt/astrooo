@@ -1,38 +1,52 @@
-import { Server } from "socket.io"
-import { PrismaClient } from '@prisma/client'
+import { Server } from "socket.io";
+import Prisma from "@prisma/client";
 
 interface Message {
-    content: string;
-    user_id: number;
-    conversation_id: number;
+  content: string;
+  user_id: number;
+  conversation_id: number;
 }
 
 interface Typing {
-    user_id: number;
-    conversation_id: number;
+  user_id: number;
+  conversation_id: number;
 }
 
 export default defineNitroPlugin((nitroApp) => {
-    const socketServer = new Server(3001, {
-        serveClient: false,
-        cors: {
-            origin: '*'
-        }
-    })
-    const prisma = new PrismaClient()
+  let socketServer: Server;
+  socketServer = new Server(3001, {
+    serveClient: false,
+    cors: {
+      origin: "*",
+    },
+  });
+  const prisma = new Prisma.PrismaClient();
 
-    socketServer.on('connection', (socket) => {
-        console.log('a user connected')
+  socketServer.on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      setTimeout(() => {
+        socketServer = new Server(3001, {
+          serveClient: false,
+          cors: {
+            origin: "*",
+          },
+        });
+      }, 1000);
+    }
+  });
 
-        socket.on('message', async (message: Message) => {
-            const m = await prisma.messages.create({
-                data: message
-            })
-            socketServer.emit('message', m)
-        })
+  socketServer.on("connection", (socket) => {
+    console.log("a user connected");
 
-        socket.on('isTyping', (t: Typing) => {
-            socketServer.emit('isTyping', t)
-        })
-    })
-})
+    socket.on("message", async (message: Message) => {
+      const m = await prisma.messages.create({
+        data: message,
+      });
+      socketServer.emit("message", m);
+    });
+
+    socket.on("isTyping", (t: Typing) => {
+      socketServer.emit("isTyping", t);
+    });
+  });
+});
