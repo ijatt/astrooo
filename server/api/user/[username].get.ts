@@ -1,4 +1,5 @@
 import prisma from "~/server/db/prisma"
+import { Prisma } from "@prisma/client"
 
 export default defineEventHandler(async (event) => {
   try {
@@ -47,12 +48,17 @@ export default defineEventHandler(async (event) => {
           orderBy: {
             created_at: "desc"
           }
-        }
+        },
+        followedBy: true,
+        following: true
       }
     })
 
     return user
   } catch (error) {
-    return createError({ statusCode: 404, statusMessage: "User not found." })
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return createError({ statusCode: Number(error.code), statusMessage: error.message })
+    }
+    return createError({ statusCode: 404, statusMessage: error.message   })
   }
 })

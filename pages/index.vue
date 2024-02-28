@@ -70,4 +70,5 @@ watchEffect(() => {
 onBeforeUnmount(() => {
   useScrollStore().scroll = y.value;
 })
+
 </script>

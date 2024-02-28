@@ -3,14 +3,14 @@ import { Prisma } from "@prisma/client"
 
 export default defineEventHandler(async (event) => {
   try {
-    const { username } = getQuery(event)
+    const { username } = getQuery<{ username: string }>(event);
 
     if (!username) {
-      return createError({ statusCode: 400, statusMessage: "Bad Request" })
+      return createError({ statusCode: 400, statusMessage: "Bad Request" });
     }
 
     if (!prisma) {
-      return createError({ statusCode: 500, statusMessage: "Internal Server Error" })
+      return createError({ statusCode: 500, statusMessage: "Internal Server Error" });
     }
 
     const users = await prisma.users.findMany({

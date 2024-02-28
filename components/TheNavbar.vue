@@ -33,6 +33,14 @@
         <Icon name="mdi:account" size="20" />
         Profile
       </NuxtLink>
+      <NuxtLink
+        to="/message"
+        class="flex items-center font-semibold tracking-wide hover:text-indigo-600"
+        :class="route.path === `/${userStore().user?.username}` ? 'text-indigo-600' : 'text-slate-600 dark:text-slate-400'"
+      >
+        <Icon name="mdi:account" size="20" />
+        Profile
+      </NuxtLink>
     </div>
     <div class="hidden md:flex gap-2 items-center">
       <button

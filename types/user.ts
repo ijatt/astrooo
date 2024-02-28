@@ -43,6 +43,13 @@ export interface UserProfile {
     image_url: string;
     posts: Post[]
     created_at: Date;
+    followedBy: follows[];
+    following: follows[];
+}
+
+interface follows {
+    followingId: number;
+    followedById: number;
 }
 
 

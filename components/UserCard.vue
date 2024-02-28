@@ -1,6 +1,6 @@
 <template>
-  <div class="rounded-md mr-2 cursor-pointer border border-slate-200 dark:border-slate-700 max-w-[250px]">
-    <img src="/background.png" class="w-full h-[100px] object-cover" alt="">
+  <div class="rounded-md mr-2 cursor-pointer border border-slate-200 dark:border-slate-700 max-w-[300px]">
+    <img src="/background.png" class="w-full h-[100px] object-cover rounded-t-md" alt="">
     <div class="flex justify-between">
       <div class="w-16 h-16 -mt-[34px] ml-4 bg-white border border-slate-200 rounded-full p-1">
         <img class="w-full h-full object-cover rounded-full" alt=""
@@ -18,7 +18,7 @@
         Follow
       </button>
     </div>
-    <p class="p-2 text-slate-600 truncate dark:text-slate-300 mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    <p class="p-2 text-slate-600 truncate dark:text-slate-300">Lorem ipsum dolor sit amet consectetur adipisicing elit.
       Quisquam, quos.
     </p>
   </div>

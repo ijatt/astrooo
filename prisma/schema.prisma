@@ -3,24 +3,37 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
     directUrl = env("DIRECT_URL")
 }
 
 model users {
-    id         Int        @id @default(autoincrement())
-    username   String     @unique
-    first_name String
-    last_name  String
-    email      String     @unique
-    password   String
-    image_url  String?
-    posts      posts[]
-    comments   comments[]
-    likes      likes[]
-    created_at DateTime   @default(now())
-    updated_at DateTime   @default(now())
+    id            Int             @id @default(autoincrement())
+    username      String          @unique
+    first_name    String
+    last_name     String
+    email         String          @unique
+    password      String
+    image_url     String?
+    posts         posts[]
+    comments      comments[]
+    likes         likes[]
+    created_at    DateTime        @default(now())
+    updated_at    DateTime        @default(now())
+    followedBy    follows[]       @relation("followedBy")
+    following     follows[]       @relation("following")
+    conversations conversations[]
+    messages      messages[]
+}
+
+model follows {
+    followedBy   users? @relation("followedBy", fields: [followedById], references: [id])
+    followedById Int
+    following    users? @relation("following", fields: [followingId], references: [id])
+    followingId  Int
+
+    @@id([followingId, followedById])
 }
 
 model posts {
@@ -63,4 +76,23 @@ model images {
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
     posts      posts    @relation(fields: [post_id], references: [id], onDelete: Cascade)
+}
+
+model conversations {
+    id         Int        @id @default(autoincrement())
+    created_at DateTime   @default(now())
+    updated_at DateTime   @default(now())
+    user       users[]
+    messages   messages[]
+}
+
+model messages {
+    id              Int           @id @default(autoincrement())
+    content         String
+    conversation_id Int
+    user_id         Int
+    created_at      DateTime      @default(now())
+    updated_at      DateTime      @default(now())
+    conversations   conversations @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
+    users           users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

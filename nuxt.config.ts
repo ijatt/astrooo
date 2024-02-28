@@ -18,6 +18,11 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
     '@morev/vue-transitions/nuxt',
-    "@nuxt/image"
-  ]
+    "@nuxt/image",
+    'nuxt-contextual-transition',
+  ],
+  nitro: {
+    plugins: ['./plugins/mongodb', './plugins/socket.io.server']
+  },
+  plugins: ['./plugins/socket.io']
 })

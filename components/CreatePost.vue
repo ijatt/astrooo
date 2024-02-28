@@ -11,7 +11,7 @@
           @input="resizeTextarea"
           ref="textarea"
           v-model="content"
-          class="w-full p-2 mt-1 border-none bg-transparent ring-slate-300 rounded-md focus:ring-0 focus:outline-none text-slate-500 dark:text-slate-300 shadow-inner dark:placeholder:text-slate-400"
+          class="w-full p-2 mt-1 resize-none border-none bg-transparent ring-slate-300 rounded-md focus:ring-0 focus:outline-none text-slate-500 dark:text-slate-300 shadow-inner dark:placeholder:text-slate-400"
           placeholder="What's on your mind?"
         ></textarea>
         <input type="file" ref="file" hidden @change="hanldeChange" multiple />
@@ -125,7 +125,7 @@ const payload = computed(():PostRequest =>({
 }));
 
 const createPost = async () => {
-  if (!payload.value.content) {
+  if (!payload.value.content && !payload.value.image_url) {
     toastError("Cannot post the post", "Content is required");
     return;
   }

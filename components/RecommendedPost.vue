@@ -12,12 +12,13 @@
       </button>
     </div>
     <p class="text-slate-600 dark:text-slate-300 font-semibold tracking-wide">{{ topic ? topic : 'Taib' }}</p>
-    <p class="text-slate-600 dark:text-slate-300 text-sm tracking-wide">10 posts</p>
+    <p class="text-slate-600 dark:text-slate-300 text-sm tracking-wide">{{ count ? count : 0 }} posts</p>
   </div>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps<{
   topic?: string; 
+  count?: number;
 }>();
 </script>

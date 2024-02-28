@@ -20,10 +20,12 @@
         />
       </div>
       <div>
-        <button  v-if="userStore().user?.id !== user.id" class="py-1 px-4 bg-indigo-600 text-white font-semibold tracking-wide rounded-full  focus:outline-none"
-          @click="toastInfo('Feature not available yet (idk how to design the database)')"
+        <button v-if="userStore().user?.id !== user.id" class="disabled:bg-blue-400 py-1 px-4 font-semibold tracking-wide rounded-full  focus:outline-none"
+          :class="{'bg-indigo-600 text-white': !isFollowed, 'bg-slate-100 text-slate-700 border border-slate-300': isFollowed}"
+          @click="follow"
         >
-          Follow
+          <span v-if="isFollowed">Following</span>
+          <span v-else>Follow</span>
         </button>
         <button @click="open = true" v-else class="py-1 px-4 bg-indigo-600 text-white font-semibold tracking-wide rounded-full  focus:outline-none">
           Edit Profile
@@ -31,17 +33,18 @@
       </div>
     </div>  
     <div class="p-4 border-b border-slate-200 dark:border-slate-700">
-      <h1 class="text-2xl font-bold tracking-wide text-slate-700 dark:text-slate-300">{{ user.first_name }} {{ user.last_name }}</h1>
+      <h1 class="text-2xl font-bold tracking-wide text-slate-700 dark:text-slate-300">{{ user.first_name }} {{ user.last_name }}
+         <span v-if="isFollowingMe" class="text-xs bg-slate-100 rounded-md border border-slate-400 py-1 px-2 italic font-medium">Follows you</span>
+      </h1>
       <p class="text-slate-600 dark:text-slate-300">@{{ user.username }}</p>
       <p class="text-slate-600 dark:text-slate-300 mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
       <div class="flex gap-x-2 mt-4 items-center">
         <Icon name="mdi:calendar" class="w-5 h-5 text-slate-600 dark:text-slate-300" />
         <p v-if="user.created_at" class="text-slate-600 dark:text-slate-300">Joined {{ date }}</p>
       </div>
+      <p class="text-slate-600 dark:text-slate-300 mt-2"><b>{{ user.following.length }}</b> following &nbsp; <b>{{ user.followedBy.length }}</b> followers</p>
     </div>
-    <div class="">
-      <ThePost v-for="post in user.posts" :key="post.id" :post="post" />
-    </div>
+    <ThePost v-for="post in user.posts" :key="post.id" :post="post" />
     <UModal v-model="open">
       <UpdateProfile :user="user" @close="closeModal" />
     </UModal>
@@ -64,7 +67,6 @@ const { data: userData, error, refresh } = await useFetch(`/api/user/${route.par
     return data.value as UserProfile;
   }
 });
-const config = useRuntimeConfig()
 const user = ref<UserProfile>(userData.value as UserProfile);
 const date = ref("")
 const open = ref(false)
@@ -92,6 +94,29 @@ const closeModal = async () => {
   user.value = userData.value as UserProfile;
   open.value = false
 }
+
+const follow = async () => {
+  await $fetch('/api/user/follow', {
+    method: "POST",
+    body: {
+      following_id: userStore().user?.id,
+      follower_id: user.value.id
+    }
+  })
+  await refresh();
+}
+
+const isFollowed = computed(() => {
+  return user.value.followedBy.some((follower) => follower.followingId === userStore().user?.id)
+})
+
+const isFollowingMe = computed(() => {
+  return user.value.following.some((following) => following.followedById === userStore().user?.id)
+})
+
+watch(() => userData.value, () => {
+  user.value = userData.value as UserProfile;
+})
 </script>
 
 <style>
